@@ -19,9 +19,7 @@ import a.btl.myapplication.R;
 import a.btl.myapplication.entity.Type;
 import a.btl.myapplication.entity.User;
 import a.btl.myapplication.entity.dto.UserSession;
-import a.btl.myapplication.ui.login.LoginActivity;
 import a.btl.myapplication.utils.AppDatabase;
-import a.btl.myapplication.utils.PasswordUtil;
 
 public class TypeActivity extends AppCompatActivity implements TypeAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
@@ -58,7 +56,7 @@ public class TypeActivity extends AppCompatActivity implements TypeAdapter.OnIte
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.btnRegister) {
-                signup();
+                signup(user);
             } else if (view.getId() == R.id.btnExit) {
                 Intent intent = new Intent(TypeActivity.this, SignupActivity.class);
                 intent.putExtra("user", user);
@@ -67,21 +65,20 @@ public class TypeActivity extends AppCompatActivity implements TypeAdapter.OnIte
         }
     }
 
-    private void signup() {
+    private void signup(User user) {
+        AtomicReference<String> mes = new AtomicReference<>();
         new Thread(() -> {
             if (db.userDao().countUserByUsername(user.getUsername()) == 0 && db.userDao().countUserByEmail(user.getEmail()) == 0) {
                 db.userDao().insert(user);
                 Optional<User> user1 = db.userDao().getUserByUsername(user.getUsername());
                 UserSession.getInstance(this).setData(user1.get().getHoten(), user1.get().getUserId(), user1.get().getTypeId());
+                mes.set("Đăng ký thành công!");
+                startActivity(new Intent(TypeActivity.this, MainActivity.class));
+            } else {
+                mes.set("Tài khoản đã tồn tại!");
             }
-            runOnUiThread(() -> {
-                if (db.userDao().countUserByUsername(user.getUsername()) == 0 && db.userDao().countUserByEmail(user.getEmail()) == 0) {
-                    Toast.makeText(TypeActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(TypeActivity.this, MainActivity.class));
-                } else {
-                    Toast.makeText(TypeActivity.this, "Tài khoản đã tồn tại!", Toast.LENGTH_SHORT).show();
-                }
-            });
+            runOnUiThread(() ->
+                    Toast.makeText(TypeActivity.this, mes.toString(), Toast.LENGTH_SHORT).show());
         }).start();
     }
 
