@@ -19,14 +19,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import a.btl.myapplication.R;
 import a.btl.myapplication.databinding.FragmentDashboardBinding;
-import a.btl.myapplication.entity.History;
 import a.btl.myapplication.entity.dto.BMIOnDay;
 import a.btl.myapplication.entity.dto.ExerciseOnDay;
 import a.btl.myapplication.utils.DateConverter;
