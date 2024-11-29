@@ -44,6 +44,14 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(@NonNull String email, @NonNull String hoten, @NonNull String username, @NonNull String password, @NonNull Integer typeId) {
+        this.email = email;
+        this.hoten = hoten;
+        this.username = username;
+        this.password = password;
+        this.typeId = typeId;
+    }
+
     public int getUserId() {
         return userId;
     }

@@ -82,6 +82,7 @@ public class DashboardViewModel extends ViewModel {
             history.setExerciseId(1);
             history.setBMI(bmi);
             history.setNgayTao(new Date());
+            history.setIsFav1(false);
             db.historyDao().insert(history);
         }).start();
     }

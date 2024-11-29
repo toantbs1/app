@@ -1,11 +1,18 @@
 package a.btl.myapplication.ui.practise;
 
+import android.app.ActivityManager;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -23,8 +30,10 @@ import a.btl.myapplication.R;
 import a.btl.myapplication.entity.Exercises;
 import a.btl.myapplication.entity.History;
 import a.btl.myapplication.entity.dto.UserSession;
+import a.btl.myapplication.ui.favorite.FavoriteActivity;
 import a.btl.myapplication.utils.AppDatabase;
 import a.btl.myapplication.utils.AssetUtil;
+import a.btl.myapplication.utils.MusicService;
 
 public class PracticeActivity extends AppCompatActivity {
     private VideoView videoView;
@@ -37,6 +46,8 @@ public class PracticeActivity extends AppCompatActivity {
     private int currentPosition;
     private AppDatabase db;
     private FloatingActionButton fabExit;
+    private MusicService musicService;
+    private CheckBox heartCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +55,34 @@ public class PracticeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_practice);
         getWidget();
         setData();
+        Intent serviceIntent = new Intent(this, MusicService.class);
+        startService(serviceIntent);
+        FloatingActionButton fabMusic = findViewById(R.id.fab_music);
+        fabMusic.setOnClickListener(view -> showMusicControlDialog());
         fabExit.setOnClickListener(new doSomething());
         btnNext.setOnClickListener(new doSomething());
         btnPre.setOnClickListener(new doSomething());
+
+
+        heartCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                new Thread(()->{
+                    History history = new History();
+                    history.setUserId(UserSession.getInstance(this).getUserId());
+                    history.setExerciseId(exercisesList.get(currentPosition).getExerciseId());
+                    history.setBMI(0);
+                    history.setIsFav1(true);
+                    history.setNgayTao(new Date());
+                    db.historyDao().insert(history);
+                }).start();
+            } else {
+                new Thread(()->{
+                    History history = db.historyDao().getHistoryByIsFavAndExerciseIdAndUserId(1, exercisesList.get(currentPosition).getExerciseId(), UserSession.getInstance(this).getUserId());
+                    history.setIsFav1(false);
+                    db.historyDao().update(history);
+                }).start();
+            }
+        });
     }
 
     private void getWidget() {
@@ -56,6 +92,7 @@ public class PracticeActivity extends AppCompatActivity {
         btnControl = findViewById(R.id.controlButton);
         btnPre = findViewById(R.id.btn_pre);
         btnNext = findViewById(R.id.btn_next);
+        heartCheckbox = findViewById(R.id.heart_checkbox);
         videoView = findViewById(R.id.videoView);
         db = AppDatabase.getInstance(this);
         fabExit = findViewById(R.id.fab_exit);
@@ -67,13 +104,16 @@ public class PracticeActivity extends AppCompatActivity {
         currentPosition = getIntent().getIntExtra("current_position", 0);
         tvPos.setText(String.format("%d/%d", currentPosition + 1, exercisesList.size()));
         tvName.setText(exercisesList.get(currentPosition).getName());
+        int count = db.historyDao().countByIsFavAndExerciseIdAndUserId(1, exercisesList.get(currentPosition).getExerciseId(), UserSession.getInstance(this).getUserId());
+        heartCheckbox.setChecked(count == 0 ? false : true);
 
         new Thread(() -> {
             History history = new History();
             history.setUserId(UserSession.getInstance(this).getUserId());
-            history.setExerciseId(currentPosition + 1);
+            history.setExerciseId(exercisesList.get(currentPosition).getExerciseId());
             history.setBMI(Double.valueOf(0));
             history.setNgayTao(new Date());
+            history.setIsFav1(false);
             db.historyDao().insert(history);
         }).start();
 
@@ -120,6 +160,62 @@ public class PracticeActivity extends AppCompatActivity {
         }
     }
 
+    private void showMusicControlDialog() {
+        // Tạo dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_music_control);
+
+        Switch musicSwitch = dialog.findViewById(R.id.music_switch);
+        SeekBar volumeSeekBar = dialog.findViewById(R.id.volume_seekbar);
+
+        // Lấy trạng thái nhạc từ SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        musicSwitch.setChecked(prefs.getBoolean("music_enabled", true));
+        volumeSeekBar.setProgress(prefs.getInt("volume", 50)); // Giá trị âm lượng mặc định
+
+        // Thiết lập sự kiện cho Switch
+        musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Intent serviceIntent = new Intent(this, MusicService.class);
+            if (isChecked) {
+                // Kiểm tra xem service đã chạy chưa
+                if (!musicService.isServiceRunning(MusicService.class)) {
+                    startService(serviceIntent);
+                }
+            } else {
+                if (musicService.isServiceRunning(MusicService.class)) {
+                    stopService(serviceIntent);
+                }
+            }
+            // Lưu trạng thái nhạc vào SharedPreferences
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("music_enabled", isChecked);
+            editor.apply();
+        });
+
+        // Thiết lập sự kiện cho SeekBar
+        volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float volume = progress / 100f;
+                Intent volumeIntent = new Intent(MusicService.ACTION_SET_VOLUME);
+                volumeIntent.putExtra("volume", volume);
+                sendBroadcast(volumeIntent);
+
+                // Lưu âm lượng vào SharedPreferences
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("volume", progress);
+                editor.apply();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        dialog.show();
+    }
     private void handleControlButton() {
         if (isTimerRunning) {
             pauseCountdown();
@@ -158,5 +254,12 @@ public class PracticeActivity extends AppCompatActivity {
         int seconds = (int) (timeLeftInMillis / 1000);
         String timeLeftFormatted = String.format("%02d:%02d", seconds / 60, seconds % 60);
         tvTime.setText(timeLeftFormatted);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent serviceIntent = new Intent(this, MusicService.class);
+        stopService(serviceIntent); // Dừng service khi ứng dụng bị đóng
     }
 }

@@ -1,7 +1,13 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+<resources>
+    <!-- Chủ đề sáng -->
+    <style name="AppTheme.Light" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@color/textColorLight</item>
+        <item name="android:windowBackground">@color/backgroundLight</item>
+    </style>
+
+    <!-- Chủ đề tối -->
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <item name="android:textColor">@color/textColorDark</item>
+        <item name="android:windowBackground">@color/backgroundDark</item>
     </style>
 </resources>

@@ -5,15 +5,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class SettingViewModel extends ViewModel {
+    private int volume;
 
-    private final MutableLiveData<String> mText;
-
-    public SettingViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+    public int getVolume() {
+        return volume;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void setVolume(int volume) {
+        this.volume = volume;
     }
 }

@@ -107,19 +107,24 @@ public class DashboardFragment extends Fragment {
 
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
+        lineChart.invalidate(); // Cập nhật biểu đồ
+
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setDrawLabels(false);
+        lineChart.getXAxis().setValueFormatter(new DateValueFormatter());
 
         // Cấu hình biểu đồ
+        lineChart.getXAxis().setLabelCount(7);
         lineChart.getDescription().setEnabled(false); // Tắt mô tả
-        lineChart.getXAxis().setValueFormatter(new DateValueFormatter());
-        lineChart.getXAxis().setGranularity(2f); // Đặt khoảng cách giữa các nhãn trên trục x
-//        lineChart.getXAxis().setDrawGridLines(true); // Vẽ các đường lưới trên trục x
-//        lineChart.getAxisLeft().setDrawGridLines(true); // Vẽ các đường lưới trên trục y
-        lineChart.getAxisRight().setEnabled(true); // Tắt trục y bên phải
-        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục x ở dưới cùng
-        //lineChart.getXAxis().setLabelCount(histories.size() + 2, true); // Số lượng nhãn sẽ hiển thị
+        lineChart.getXAxis().setGranularity(1f); // Đặt khoảng cách giữa các nhãn trên trục x
         lineChart.getXAxis().setDrawGridLines(false); // Ẩn các đường lưới
+        lineChart.getAxisRight().setEnabled(false); // Tắt trục y bên phải
+        lineChart.getXAxis().setDrawLabels(true); // Hiển thị nhãn
+
+        // Bật zoom khi nhấn đúp
+        lineChart.setDragEnabled(true); // Bật kéo để xem
         lineChart.setScaleEnabled(true);
-        lineChart.setDoubleTapToZoomEnabled(true); // Bật zoom khi nhấn đúp
+        lineChart.setDoubleTapToZoomEnabled(true);
 
         // Cập nhật biểu đồ
         lineChart.invalidate();

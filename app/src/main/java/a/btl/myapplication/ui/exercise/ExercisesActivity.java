@@ -27,6 +27,7 @@ import a.btl.myapplication.entity.Exercises;
 import a.btl.myapplication.entity.ListExercises;
 import a.btl.myapplication.utils.AppDatabase;
 import a.btl.myapplication.utils.AssetUtil;
+import a.btl.myapplication.utils.MusicService;
 
 public class ExercisesActivity extends AppCompatActivity implements ExerciseAdapter.OnItemClickListener {
 
@@ -50,6 +51,7 @@ public class ExercisesActivity extends AppCompatActivity implements ExerciseAdap
         getWidget();
         setAdapter();
         setVideoAndImage(exercisesList.get(p).getVideo(), exercisesList.get(p).getAvatar());
+
         btnStart.setOnClickListener(new doSomething());
         btnExit.setOnClickListener(new doSomething());
         tvVideo.setOnClickListener(new doSomething());

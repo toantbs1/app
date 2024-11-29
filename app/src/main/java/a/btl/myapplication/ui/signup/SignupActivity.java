@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import a.btl.myapplication.R;
 import a.btl.myapplication.entity.User;
 import a.btl.myapplication.utils.AppDatabase;
+import a.btl.myapplication.utils.EmailCheck;
 import a.btl.myapplication.utils.PasswordUtil;
 
 public class SignupActivity extends AppCompatActivity {
@@ -52,7 +53,12 @@ public class SignupActivity extends AppCompatActivity {
         if (!hoten.isEmpty() && !email.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
             User user = new User();
             user.setHoten(hoten);
-            user.setEmail(email);
+            if (!EmailCheck.isValidEmail(email)) {
+                Toast.makeText(this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+                return; // Dừng lại nếu email không hợp lệ
+            } else {
+                user.setEmail(email);
+            }
             user.setUsername(username);
             user.setPassword(PasswordUtil.hashPassword(password));
             user.setTypeId(1);

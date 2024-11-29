@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,21 +20,24 @@ import java.util.List;
 
 import a.btl.myapplication.ui.exercise.ExercisesActivity;
 import a.btl.myapplication.R;
+import a.btl.myapplication.ui.favorite.FavoriteActivity;
 import a.btl.myapplication.ui.notification.TimeChooseActivity;
 import a.btl.myapplication.databinding.FragmentHomeBinding;
 import a.btl.myapplication.entity.ListExercises;
+import a.btl.myapplication.ui.practise.PracticeActivity;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
-
+    private TextView tvFavor;
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        tvFavor = root.findViewById(R.id.tv_is_fav);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -53,6 +57,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), TimeChooseActivity.class));
+            }
+        });
+        tvFavor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), FavoriteActivity.class));
             }
         });
         return root;

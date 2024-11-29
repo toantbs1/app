@@ -3,4 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#80808080</color>
+    <color name="colorPrimary">#6200EE</color> <!-- Màu chính -->
+    <color name="colorPrimaryDark">#3700B3</color> <!-- Màu tối hơn -->
+    <color name="colorAccent">#03DAC5</color>
+        <color name="textColorLight">#000000</color> <!-- Màu chữ cho chế độ sáng -->
+        <color name="textColorDark">#FFFFFF</color> <!-- Màu chữ cho chế độ tối -->
+        <color name="backgroundLight">#FFFFFF</color> <!-- Nền sáng -->
+        <color name="backgroundDark">#000000</color> <!-- Nền tối -->
 </resources>

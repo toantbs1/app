@@ -25,6 +25,9 @@ public class History implements Serializable {
     @ColumnInfo(name = "BMI")
     private double BMI;
 
+    @ColumnInfo(name = "isFav")
+    private Integer isFav;
+
     @ColumnInfo(name = "userId")
     private Integer userId;
 
@@ -32,6 +35,29 @@ public class History implements Serializable {
     private Integer exerciseId;
 
     public History() {
+    }
+
+    public Integer getIsFav() {
+        return isFav;
+    }
+
+    public boolean getIsFav1(){
+        if(isFav == 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void setIsFav(Integer isFav) {
+        this.isFav = isFav;
+    }
+    public void setIsFav1(boolean isFav) {
+        if(!isFav){
+            this.isFav = 0;
+        } else {
+            this.isFav = 1;
+        }
     }
 
     public Integer getHistoryId() {
