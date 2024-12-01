@@ -48,6 +48,9 @@ public class PracticeActivity extends AppCompatActivity {
     private FloatingActionButton fabExit;
     private MusicService musicService;
     private CheckBox heartCheckbox;
+    private Dialog dialog;
+    private Switch musicSwitch;
+    private SeekBar volumeSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class PracticeActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new doSomething());
         btnPre.setOnClickListener(new doSomething());
 
+        musicSwitch.setChecked(true);
 
         heartCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -96,6 +100,12 @@ public class PracticeActivity extends AppCompatActivity {
         videoView = findViewById(R.id.videoView);
         db = AppDatabase.getInstance(this);
         fabExit = findViewById(R.id.fab_exit);
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_music_control);
+
+        musicSwitch = dialog.findViewById(R.id.music_switch);
+        volumeSeekBar = dialog.findViewById(R.id.volume_seekbar);
+
     }
 
     private void setData() {
@@ -162,11 +172,6 @@ public class PracticeActivity extends AppCompatActivity {
 
     private void showMusicControlDialog() {
         // Tạo dialog
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_music_control);
-
-        Switch musicSwitch = dialog.findViewById(R.id.music_switch);
-        SeekBar volumeSeekBar = dialog.findViewById(R.id.volume_seekbar);
 
         // Lấy trạng thái nhạc từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
@@ -177,7 +182,6 @@ public class PracticeActivity extends AppCompatActivity {
         musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             Intent serviceIntent = new Intent(this, MusicService.class);
             if (isChecked) {
-                // Kiểm tra xem service đã chạy chưa
                 //if (!musicService.isServiceRunning(MusicService.class)) {
                     startService(serviceIntent);
                 //}

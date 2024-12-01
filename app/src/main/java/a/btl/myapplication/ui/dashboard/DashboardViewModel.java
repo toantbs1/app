@@ -50,9 +50,11 @@ public class DashboardViewModel extends ViewModel {
                 for (Integer i : e) {
                     calo += db.exercisesDao().getCaloByExerciseId(i);
                 }
-                exerciseOnDay.setDate(date);
-                exerciseOnDay.setCalo(calo);
-                caloListData.add(exerciseOnDay);
+                if(calo != 0){
+                    exerciseOnDay.setDate(date);
+                    exerciseOnDay.setCalo(calo);
+                    caloListData.add(exerciseOnDay);
+                }
             }
             caloList.postValue(caloListData);
         }).start();
@@ -64,11 +66,13 @@ public class DashboardViewModel extends ViewModel {
             List<BMIOnDay> caloListData = new ArrayList<>();
             List<String> dates = db.historyDao().getDistinctDates();
             for (String date : dates) {
-                BMIOnDay exerciseOnDay = new BMIOnDay();
                 History e = db.historyDao().getHistoryByNgayTaoAndUserIdAndBMI(date, UserSession.getInstance(context).getUserId(), Double.valueOf(0));
-                exerciseOnDay.setDate(date);
-                exerciseOnDay.setBMI(e.getBMI());
-                caloListData.add(exerciseOnDay);
+                if (e != null) {
+                    BMIOnDay exerciseOnDay = new BMIOnDay();
+                    exerciseOnDay.setDate(date);
+                    exerciseOnDay.setBMI(e.getBMI());
+                    caloListData.add(exerciseOnDay);
+                }
             }
             historyList.postValue(caloListData);
         }).start();

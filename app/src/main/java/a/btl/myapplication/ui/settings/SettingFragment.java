@@ -81,7 +81,7 @@ public class SettingFragment extends Fragment {
         });
 
         Intent serviceIntent = new Intent(getActivity(), MusicService.class);
-        getActivity().startService(serviceIntent);
+        //getActivity().startService(serviceIntent);
         themeSwitch.setChecked(false);
         // Thiết lập listener cho music switch
         musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
