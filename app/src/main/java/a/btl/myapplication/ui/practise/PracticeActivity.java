@@ -171,20 +171,20 @@ public class PracticeActivity extends AppCompatActivity {
         // Lấy trạng thái nhạc từ SharedPreferences
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         musicSwitch.setChecked(prefs.getBoolean("music_enabled", true));
-        volumeSeekBar.setProgress(prefs.getInt("volume", 50)); // Giá trị âm lượng mặc định
+        volumeSeekBar.setProgress(prefs.getInt("volume", 100)); // Giá trị âm lượng mặc định
 
         // Thiết lập sự kiện cho Switch
         musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             Intent serviceIntent = new Intent(this, MusicService.class);
             if (isChecked) {
                 // Kiểm tra xem service đã chạy chưa
-                if (!musicService.isServiceRunning(MusicService.class)) {
+                //if (!musicService.isServiceRunning(MusicService.class)) {
                     startService(serviceIntent);
-                }
+                //}
             } else {
-                if (musicService.isServiceRunning(MusicService.class)) {
+                //if (musicService.isServiceRunning(MusicService.class)) {
                     stopService(serviceIntent);
-                }
+                //}
             }
             // Lưu trạng thái nhạc vào SharedPreferences
             SharedPreferences.Editor editor = prefs.edit();

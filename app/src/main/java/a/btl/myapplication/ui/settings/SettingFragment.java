@@ -44,6 +44,7 @@ public class SettingFragment extends Fragment {
     private Button logoutButton, updateButton;
     private AppDatabase appDatabase;
     private SharedPreferences prefs; // Khai báo biến SharedPreferences
+    private MusicService musicService;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -79,21 +80,30 @@ public class SettingFragment extends Fragment {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         });
 
+        Intent serviceIntent = new Intent(getActivity(), MusicService.class);
+        getActivity().startService(serviceIntent);
+        themeSwitch.setChecked(false);
+        // Thiết lập listener cho music switch
+        musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Kiểm tra xem service đã chạy chưa
+                //if (!musicService.isServiceRunning(MusicService.class)) {
+                getActivity().startService(serviceIntent);
+                //}
+            } else {
+                //if (musicService.isServiceRunning(MusicService.class)) {
+                getActivity().stopService(serviceIntent);
+                //}
+            }
+        });
         // Thiết lập sự kiện cho nút đăng xuất
         logoutButton.setOnClickListener(view -> {
             Toast.makeText(getActivity(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
             UserSession.getInstance(getContext()).clearSession();
+            prefs.edit().clear();
+            prefs.edit().apply();
+            getActivity().stopService(serviceIntent);
             startActivity(new Intent(getActivity(), LoginActivity.class));
-        });
-
-        // Thiết lập listener cho music switch
-        musicSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Intent serviceIntent = new Intent(getActivity(), MusicService.class);
-            if (isChecked) {
-                getActivity().startService(serviceIntent);
-            } else {
-                getActivity().stopService(serviceIntent);
-            }
         });
 
         // Thiết lập listener cho volume seek bar
@@ -107,10 +117,12 @@ public class SettingFragment extends Fragment {
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
         // Thiết lập listener cho theme switch
@@ -170,7 +182,7 @@ public class SettingFragment extends Fragment {
     }
 
     private void loadPreferences() {
-        volumeSeekBar.setProgress(prefs.getInt("volume", 50));
+        volumeSeekBar.setProgress(prefs.getInt("volume", 200));
         musicSwitch.setChecked(prefs.getBoolean("music_enabled", true));
     }
 
