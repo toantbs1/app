@@ -53,5 +53,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-
+    implementation ("com.airbnb.android:lottie:3.4.0")
 }

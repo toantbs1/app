@@ -155,7 +155,7 @@ public class PracticeActivity extends AppCompatActivity {
                     intent.putExtra("exerciseList", (Serializable) exercisesList);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(PracticeActivity.this, "Đã đến item đầu tiên", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PracticeActivity.this, "Đã đến bài tập đầu tiên", Toast.LENGTH_SHORT).show();
                 }
             } else if (view.getId() == R.id.btn_next) {
                 if (currentPosition < exercisesList.size() - 1) {
@@ -164,7 +164,7 @@ public class PracticeActivity extends AppCompatActivity {
                     intent.putExtra("exerciseList", (Serializable) exercisesList);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(PracticeActivity.this, "Đã đến item cuối cùng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PracticeActivity.this, "Đã đến bài tập cuối cùng", Toast.LENGTH_SHORT).show();
                 }
             }
         }

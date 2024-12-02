@@ -25,7 +25,7 @@ public class MusicService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null; // Không cần thiết cho ứng dụng này
+        return null;
     }
 
     @Override

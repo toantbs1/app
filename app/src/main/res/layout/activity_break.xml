@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -58,7 +62,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="32dp">
 
@@ -77,3 +81,11 @@
             android:text="Bỏ qua" />
     </LinearLayout>
 </LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieFirework"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_fileName="firework.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+</FrameLayout>

@@ -1,7 +1,6 @@
 package a.btl.myapplication.ui.practise;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
@@ -44,6 +44,8 @@ public class BreakActivity extends AppCompatActivity {
         fabExit.setOnClickListener(new doSomething());
         startCountdown();
         updateTimerText();
+        LottieAnimationView lottieView = findViewById(R.id.lottieFirework);
+        lottieView.playAnimation();
     }
 
     private void setData() {
@@ -89,7 +91,7 @@ public class BreakActivity extends AppCompatActivity {
                     intent.putExtra("exerciseList", (Serializable) exercisesList);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(BreakActivity.this, "Đã đến item cuối cùng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BreakActivity.this, "Đã đến bài tập cuối cùng", Toast.LENGTH_SHORT).show();
                 }
             }
         }.start();
@@ -116,7 +118,7 @@ public class BreakActivity extends AppCompatActivity {
                     intent.putExtra("exerciseList", (Serializable) exercisesList);
                     startActivity(intent);
                 } else {
-                    Toast.makeText(BreakActivity.this, "Đã đến item cuối cùng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BreakActivity.this, "Đã đến bài tập cuối cùng", Toast.LENGTH_SHORT).show();
                 }
             }
         }
