@@ -128,7 +128,7 @@ public class PracticeActivity extends AppCompatActivity {
         }).start();
 
         // Sao chép video từ assets đến bộ nhớ tạm thời
-        AssetUtil.loadVideoFromAssets(this, exercisesList.get(0).getVideo(), videoView);
+        AssetUtil.loadVideoFromAssets(this, exercisesList.get(currentPosition).getVideo(), videoView);
 
         if (exercisesList.get(currentPosition).getTimeOrNum().contains("x")) {
             tvTime.setText(exercisesList.get(currentPosition).getTimeOrNum());

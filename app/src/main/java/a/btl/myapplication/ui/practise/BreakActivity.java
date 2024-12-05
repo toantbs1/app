@@ -32,6 +32,7 @@ public class BreakActivity extends AppCompatActivity {
     private boolean isTimerRunning = false;
     private int currentPosition;
     private FloatingActionButton fabExit;
+    private boolean isRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class BreakActivity extends AppCompatActivity {
         currentPosition = getIntent().getIntExtra("current_position", 0);
         tvPos.setText(String.format("Tiếp theo %d/%d", currentPosition + 1, exercisesList.size()));
         tvName.setText(exercisesList.get(currentPosition).getName());
-        AssetUtil.loadVideoFromAssets(this, exercisesList.get(0).getVideo(), videoView);
+        AssetUtil.loadVideoFromAssets(this, exercisesList.get(currentPosition + 1).getVideo(), videoView);
     }
 
     private void setWidget() {
@@ -86,10 +87,12 @@ public class BreakActivity extends AppCompatActivity {
             public void onFinish() {
                 isTimerRunning = false;
                 if (currentPosition < exercisesList.size() - 1) {
-                    Intent intent = new Intent(BreakActivity.this, PracticeActivity.class);
-                    intent.putExtra("current_position", currentPosition);
-                    intent.putExtra("exerciseList", (Serializable) exercisesList);
-                    startActivity(intent);
+                    if (isRun) {
+                        Intent intent = new Intent(BreakActivity.this, PracticeActivity.class);
+                        intent.putExtra("current_position", currentPosition);
+                        intent.putExtra("exerciseList", (Serializable) exercisesList);
+                        startActivity(intent);
+                    }
                 } else {
                     Toast.makeText(BreakActivity.this, "Đã đến bài tập cuối cùng", Toast.LENGTH_SHORT).show();
                 }
@@ -122,5 +125,11 @@ public class BreakActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isRun = false;
     }
 }

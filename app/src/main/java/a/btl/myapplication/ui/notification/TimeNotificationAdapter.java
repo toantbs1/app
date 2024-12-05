@@ -106,13 +106,13 @@ public class TimeNotificationAdapter extends RecyclerView.Adapter<TimeNotificati
             super(itemView);
             tvTime = itemView.findViewById(R.id.tv_time);
             switchNotification = itemView.findViewById(R.id.switch_notification);
-            cbMonday = setCB(itemView, R.id.cb_monday, "Mon");
-            cbTuesday = setCB(itemView, R.id.cb_tuesday, "Tues");
-            cbWednesday = setCB(itemView, R.id.cb_wednesday, "Wed");
-            cbThursday = setCB(itemView, R.id.cb_thursday, "Thur");
-            cbFriday = setCB(itemView, R.id.cb_friday, "Fri");
-            cbSaturday = setCB(itemView, R.id.cb_saturday, "Sat");
-            cbSunday = setCB(itemView, R.id.cb_sunday, "Sun");
+            cbMonday = setCB(itemView, R.id.cb_monday, "T2");
+            cbTuesday = setCB(itemView, R.id.cb_tuesday, "T3");
+            cbWednesday = setCB(itemView, R.id.cb_wednesday, "T4");
+            cbThursday = setCB(itemView, R.id.cb_thursday, "T5");
+            cbFriday = setCB(itemView, R.id.cb_friday, "T6");
+            cbSaturday = setCB(itemView, R.id.cb_saturday, "T7");
+            cbSunday = setCB(itemView, R.id.cb_sunday, "CN");
         }
     }
 

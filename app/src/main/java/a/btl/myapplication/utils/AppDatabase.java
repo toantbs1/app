@@ -21,7 +21,7 @@ import a.btl.myapplication.entity.TimeNotification;
 import a.btl.myapplication.entity.Type;
 import a.btl.myapplication.entity.User;
 
-@Database(entities = {User.class, Type.class, TimeNotification.class, ListExercises.class, Exercises.class, History.class}, version = 3)
+@Database(entities = {User.class, Type.class, TimeNotification.class, ListExercises.class, Exercises.class, History.class}, version = 4)
 @TypeConverters({DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();

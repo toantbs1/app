@@ -16,6 +16,7 @@ import a.btl.myapplication.MainActivity;
 import a.btl.myapplication.R;
 import a.btl.myapplication.entity.User;
 import a.btl.myapplication.entity.dto.UserSession;
+import a.btl.myapplication.ui.forget_password.ForgotPasswordActivity;
 import a.btl.myapplication.ui.signup.SignupActivity;
 import a.btl.myapplication.utils.AppDatabase;
 import a.btl.myapplication.utils.PasswordUtil;
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             } else if (view.getId() == R.id.tvRegister) {
                 startActivity(new Intent(LoginActivity.this, SignupActivity.class));
             } else if (view.getId() == R.id.tvForgotPassword) {
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         }
     }

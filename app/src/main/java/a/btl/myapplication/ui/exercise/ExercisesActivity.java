@@ -105,9 +105,10 @@ public class ExercisesActivity extends AppCompatActivity implements ExerciseAdap
 
             isOpen = true;
             p = position;
-            AssetUtil.loadImagesFromAssets(this, exercisesList.get(p).getAvatar(), imageView);
+            setVideoAndImage(exercisesList.get(p).getVideo(), exercisesList.get(p).getAvatar());
             tvName.setText(exercisesList.get(p).getName());
             tvGuide.setText(exercisesList.get(p).getDescription());
+            setDisplay(videoView, imageView, true, View.VISIBLE, View.GONE, tvImage, tvVideo);
         }
     }
 
