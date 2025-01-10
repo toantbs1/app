@@ -131,34 +131,53 @@ public class TimeNotificationAdapter extends RecyclerView.Adapter<TimeNotificati
     }
 
     private void scheduleNotification(TimeNotification timeNotification) {
+        // Lấy AlarmManager từ hệ thống để lên lịch thông báo
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        String[] days = timeNotification.getDaysOfWeek().split(",");
-        for (int i = 0; i < days.length; i++) {
-            if (days[i].equals("1")) {
-                int actualDayOfWeek = i + 1;
 
+        // Tạo Intent để gọi NotificationReceiver khi thông báo được kích hoạt
+        Intent intent = new Intent(context, NotificationReceiver.class);
+
+        // Lấy danh sách ngày trong tuần từ đối tượng TimeNotification
+        String[] days = timeNotification.getDaysOfWeek().split(",");
+
+        // Lặp qua từng ngày trong danh sách
+        for (int i = 0; i < days.length; i++) {
+            // Kiểm tra nếu ngày hiện tại là một trong những ngày được chọn (1 = Chủ nhật, 2 = Thứ hai, ...)
+            if (days[i].equals("1")) {
+                int actualDayOfWeek = i + 1; // Chuyển đổi chỉ số mảng thành ngày thực tế
+
+                // Tạo một đối tượng Calendar để lên lịch thông báo
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.DAY_OF_WEEK, actualDayOfWeek);
+
+                // Lấy giờ và phút từ TimeNotification
                 int hour = Integer.parseInt(timeNotification.getTime().split(":")[0]);
                 int minute = Integer.parseInt(timeNotification.getTime().split(":")[1]);
 
+                // Đặt giờ và phút cho Calendar
                 calendar.set(Calendar.HOUR_OF_DAY, hour);
                 calendar.set(Calendar.MINUTE, minute);
                 calendar.set(Calendar.SECOND, 0);
 
                 // Đảm bảo thông báo không được lên lịch trong quá khứ
                 if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
-                    calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                    calendar.add(Calendar.WEEK_OF_YEAR, 1); // Nếu trong quá khứ, lên lịch cho tuần tới
                 }
 
-                // Tạo PendingIntent với mã duy nhất
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, actualDayOfWeek * 100 + hour * 60 + minute, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                // Tạo PendingIntent với mã duy nhất để nhận thông báo
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        actualDayOfWeek * 100 + hour * 60 + minute,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
+                // Lên lịch thông báo với AlarmManager
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }
         }
     }
+
 
     public void removeItem(int position) {
         TimeNotification timeNotification = timeNotificationList.get(position);

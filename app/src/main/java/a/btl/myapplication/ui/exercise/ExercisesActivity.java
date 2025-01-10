@@ -77,9 +77,12 @@ public class ExercisesActivity extends AppCompatActivity implements ExerciseAdap
     }
 
     private void setAdapter() {
+        //Lấy dữ liệu từ Fragment Home
         Intent intent = getIntent();
         ListExercises listExercises = (ListExercises) intent.getSerializableExtra("list_exercises");
+        //Truy xuất dang sách bài tập trong database
         exercisesList = db.exercisesDao().getAllExercisesByListExerciseId(listExercises != null ? listExercises.getListExerciseId() : null);
+        //Khởi tạo adapter và hiển thị dữ liệu lên recycle view
         exerciseAdapter = new ExerciseAdapter(this, exercisesList, this);
         recyclerView.setAdapter(exerciseAdapter);
         tvListName.setText(listExercises != null ? listExercises.getListExerciseName() : "Bài tập");

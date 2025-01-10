@@ -28,9 +28,13 @@ public class HomeViewModel extends ViewModel {
     }
 
     private void loadItems(Context context) {
+        //khởi tạo và lấy một thể hiện của cơ sở dữ liệu sử dụng Room
         db = AppDatabase.getInstance(context);
+        //Tạo luồng để thực hiện tác vụ bất đồng bộ
         new Thread(() -> {
+            //Lấy typeId của lớp quản lý thông tin phiên làm việc của người dùng
             Integer typeId = UserSession.getInstance(context).getTypeId();
+            //Truy xuất dữ liệu từ database
             List<ListExercises> exercises = db.listExercisesDao().getAllListExercisesByTypeId(typeId);
             listExercises.postValue(exercises);
         }).start();

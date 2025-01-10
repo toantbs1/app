@@ -161,6 +161,8 @@ public class SettingFragment extends Fragment {
 
         // Lấy userId từ UserSession
         int userId = UserSession.getInstance(getContext()).getUserId();
+
+        // Kiểm tra tính hợp lệ của email
         if (!isValidEmail(emailText)) {
             Toast.makeText(getActivity(), "Email không hợp lệ", Toast.LENGTH_SHORT).show();
             return; // Dừng lại nếu email không hợp lệ
@@ -169,17 +171,17 @@ public class SettingFragment extends Fragment {
             User user = new User(emailText, usernameText, loginNameText, PasswordUtil.hashPassword(passwordText), UserSession.getInstance(getContext()).getTypeId());
             user.setUserId(userId);
 
-            new UpdateUserTask().execute(user);
+            // Khởi tạo và chạy một luồng mới để cập nhật thông tin người dùng
+            new Thread(() -> {
+                appDatabase.userDao().update(user); // Cập nhật thông tin người dùng trong cơ sở dữ liệu
+                // Nếu cần, có thể thông báo cho người dùng sau khi cập nhật hoàn tất
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                });
+            }).start();
         }
     }
 
-    private class UpdateUserTask extends AsyncTask<User, Void, Void> {
-        @Override
-        protected Void doInBackground(User... users) {
-            appDatabase.userDao().update(users[0]);
-            return null;
-        }
-    }
 
     private void loadPreferences() {
         volumeSeekBar.setProgress(prefs.getInt("volume", 200));

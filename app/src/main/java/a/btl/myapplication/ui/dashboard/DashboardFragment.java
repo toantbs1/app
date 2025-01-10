@@ -137,7 +137,7 @@ public class DashboardFragment extends Fragment {
             long timestamp = DateConverter.dateToDateTime(histories.get(i).getDate() + " 00:00:00").getTime();
             entries.add(new Entry(timestamp, bmi)); // Sử dụng timestamp cho trục x
         }
-        configChart(entries, "BMI Over Time", lineChart);
+        configChart(entries, "Chỉ số BMI", lineChart);
     }
 
     private void updateCaloChart(List<ExerciseOnDay> caloList) {

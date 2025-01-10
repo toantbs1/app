@@ -66,6 +66,9 @@ public class PracticeActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new doSomething());
         btnPre.setOnClickListener(new doSomething());
 
+
+
+
         musicSwitch.setChecked(true);
 
         heartCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -87,6 +90,8 @@ public class PracticeActivity extends AppCompatActivity {
                 }).start();
             }
         });
+
+
     }
 
     private void getWidget() {
@@ -97,6 +102,8 @@ public class PracticeActivity extends AppCompatActivity {
         btnPre = findViewById(R.id.btn_pre);
         btnNext = findViewById(R.id.btn_next);
         heartCheckbox = findViewById(R.id.heart_checkbox);
+
+
         videoView = findViewById(R.id.videoView);
         db = AppDatabase.getInstance(this);
         fabExit = findViewById(R.id.fab_exit);
